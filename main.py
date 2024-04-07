@@ -50,7 +50,7 @@ async def dialog(update, context):
 async def send_apod(update, context):
 
 
-    apod_info = asyncio.run(apod())
+    apod_info = apod()
     apod_image_url = apod_info['image_url']
 
     user_ids = get_joined_users_id('joined.txt')
@@ -71,7 +71,7 @@ def main():
     text_handler = MessageHandler(filters.TEXT & ~filters.COMMAND, dialog)
     start_handler = CommandHandler("start", start)
     help_handler = CommandHandler("help", help)
-    apod_handler = CommandHandler('apod', apod)
+    apod_handler = CommandHandler('apod', send_apod)
     application.add_handler(text_handler)
     application.add_handler(start_handler)
     application.add_handler(help_handler)
