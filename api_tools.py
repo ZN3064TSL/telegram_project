@@ -1,5 +1,4 @@
-import asyncio
-from project_tools import get_response
+from project_tools import get_response, translator_e_to_r
 
 
 async def apod():
@@ -10,10 +9,7 @@ async def apod():
     }
     response = await get_response(url, params=params)
     if response:
-        apod_info = {'apod_title': response.json()['title'],
-                     'apod_info': response.json()['explanation'],
-                     'image_url': response.json()['hdurl']}
-        print(apod_info)
-
-
-asyncio.run(apod())
+        apod_info = {'apod_title': translator_e_to_r(response['title']),
+                     'apod_info': translator_e_to_r(response['explanation']),
+                     'image_url': response['hdurl']}
+        return apod_info
