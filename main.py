@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from telegram.ext import Application, ApplicationBuilder, MessageHandler, CommandHandler, filters
-from project_tools import get_config
+from project_tools import get_config, joined
 
 # Импорт всех необходимых библиотек
 
@@ -32,6 +32,8 @@ async def start(update, context):
     '''
 
     user_name = update.effective_user.first_name
+    user_id = update.effective_user.username
+    joined(user_id)
     await update.message.reply_text(f'Приветствую тебя, {user_name}')
 
 
