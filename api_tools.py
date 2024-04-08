@@ -16,7 +16,7 @@ def apod():
 
     response = requests.get(url, params=params).json()
     if response:
-        apod_info = {'apod_title': translator_e_to_r(response['title']),
-                     'apod_info': translator_e_to_r(response['explanation']),
+        apod_info = {'apod_title': response['title'],
+                     'apod_info': response['explanation'],
                      'image_url': response['hdurl']}
         return apod_info
