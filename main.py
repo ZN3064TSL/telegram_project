@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from telegram.ext import Application, ApplicationBuilder, MessageHandler, CommandHandler, filters
-from project_tools import get_config, joined, get_joined_users_id, get_response
+from project_tools import get_config, joined, get_joined_users_id
 from api_tools import apod
 
 # Импорт всех необходимых библиотек
@@ -22,8 +22,8 @@ async def start(update, context):
     '''
 
     user_name = update.effective_user.first_name
-    user_id = update.effective_user.username
-    joined(user_id)
+    chat_id = update.message.chat_id
+    joined(chat_id)
     await update.message.reply_text(f'Приветствую тебя, {user_name}')
 
 
@@ -37,6 +37,7 @@ async def help(update, context):
 
     await update.message.reply_text('здесь будет инструкция к боту')
 
+
 async def dialog(update, context):
     '''
     Функция обрабатывает текст введённый пользователем
@@ -47,18 +48,22 @@ async def dialog(update, context):
 
     await update.message.reply_text('я не знаю как на это отвечать')
 
-async def send_apod(update, context):
 
+async def send_apod(update, context):
+    '''
+    Функция делает запрос и присылает пользователю
+    ежедневную картинку с описанием (будет добавлено позже)
+    :param update:
+    :param context:
+    :return:
+    '''
 
     apod_info = apod()
     apod_image_url = apod_info['image_url']
 
-    user_ids = get_joined_users_id('joined.txt')
-
-    for user_id in user_ids:
-        context.bot.send_photo(chat_id=user_id,
-                                     photo=apod_image_url,
-                                     caption=apod_info['apod_title'])
+    await context.bot.send_photo(chat_id=update.message.chat_id,
+                                 photo=apod_image_url,
+                                 caption=apod_info['apod_title'])
 
 
 def main():
