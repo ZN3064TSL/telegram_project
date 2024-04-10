@@ -1,7 +1,8 @@
 import logging
+import random
 from telegram.ext import Application, MessageHandler, CommandHandler, filters
 from project_tools import get_config, joined
-from api_tools import apod, epic
+from api_tools import apod, epic, mars_rover_photos
 from keyboard import markup
 
 # Импорт всех необходимых библиотек
@@ -81,8 +82,27 @@ async def send_epic(update, context):
 
     await context.bot.send_photo(chat_id=update.message.chat_id,
                                  photo=epic_image_url,
-                                 caption=f'Новейшее изображение Земли\n\n'
-                                         f'Дата снимка: {'.'.join([i for i in epic_info[0].values()])}')
+                                 caption=f'Новейшее изображение Земли.\n\n'
+                                         f'Дата снимка: {'-'.join([i for i in epic_info[0].values()])}')
+
+
+async def send_mars_rover_photos(update, context):
+    '''
+    Функция делает запрос и присылает пользователю
+    последние фотоснимки Марса с марсаходов
+    :param update:
+    :param context:
+    :return:
+    '''
+
+    mars_rover_photos_info = await mars_rover_photos()
+    photos = random.choices(mars_rover_photos_info['photos'], k=10)
+    date = mars_rover_photos_info['date']
+
+    await context.bot.send_photos(chat_id=update.message.chat_id,
+                                  photos=photos[0],
+                                  caption=(f'Новейшие изображения Марса, сделанные марсоходами.\n\n'
+                                           f'Дата снимка: {date}'))
 
 
 def main():
@@ -97,11 +117,13 @@ def main():
     help_handler = CommandHandler("help", help)
     apod_handler = CommandHandler('apod', send_apod)
     epic_handler = CommandHandler('epic', send_epic)
+    mars_rover_photos_handler = CommandHandler('mars_rover_photos', send_mars_rover_photos)
     application.add_handler(text_handler)
     application.add_handler(start_handler)
     application.add_handler(help_handler)
     application.add_handler(apod_handler)
     application.add_handler(epic_handler)
+    application.add_handler(mars_rover_photos_handler)
     application.run_polling()
 
 
