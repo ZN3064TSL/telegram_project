@@ -1,8 +1,7 @@
-import asyncio
 import logging
-from telegram.ext import Application, ApplicationBuilder, MessageHandler, CommandHandler, filters
-from project_tools import get_config, joined, get_joined_users_id
-from api_tools import apod
+from telegram.ext import Application, MessageHandler, CommandHandler, filters
+from project_tools import get_config, joined
+from api_tools import apod, epic
 from keyboard import markup
 
 # Импорт всех необходимых библиотек
@@ -68,6 +67,24 @@ async def send_apod(update, context):
                                  caption=f'{apod_info['apod_title']}\n\n\n{apod_info['apod_info']}')
 
 
+async def send_epic(update, context):
+    '''
+    Функция делает запрос и присылает пользователю
+    последний фотоснимок Земли сделанный телескопом Кассегрена
+    :param update:
+    :param context:
+    :return:
+    '''
+
+    epic_info = await epic()
+    epic_image_url = epic_info[-1]
+
+    await context.bot.send_photo(chat_id=update.message.chat_id,
+                                 photo=epic_image_url,
+                                 caption=f'Новейшее изображение Земли\n\n'
+                                         f'Дата снимка: {'.'.join([i for i in epic_info[0].values()])}')
+
+
 def main():
     '''
     Основная функция которая организует работу всех частей бота
@@ -79,10 +96,12 @@ def main():
     start_handler = CommandHandler("start", start)
     help_handler = CommandHandler("help", help)
     apod_handler = CommandHandler('apod', send_apod)
+    epic_handler = CommandHandler('epic', send_epic)
     application.add_handler(text_handler)
     application.add_handler(start_handler)
     application.add_handler(help_handler)
     application.add_handler(apod_handler)
+    application.add_handler(epic_handler)
     application.run_polling()
 
 
