@@ -1,5 +1,3 @@
-import asyncio
-
 from project_tools import get_response
 
 
@@ -14,11 +12,11 @@ async def apod():
     url = 'http://api.nasa.gov/planetary/apod'
 
     params = {
-        'api_key': 'hE19M0YbWOLxyWWhu46Ginmp3fod4PGOBcVPLyan',
-        'emergency_api_key': 'YCwURtFzlyuwRav2iE0ZaLsJC9wYHmD25pud4l92'
+        'api_key': 'hE19M0YbWOLxyWWhu46Ginmp3fod4PGOBcVPLyan'
     }
 
     response = await get_response(url, params=params)
+    print(response)
     if response:
         apod_info = {'apod_title': response['title'],
                      'apod_info': response['explanation'],
@@ -36,8 +34,7 @@ async def epic():
     url = 'http://api.nasa.gov/EPIC/api/natural/'
 
     params = {
-        'api_key': 'hE19M0YbWOLxyWWhu46Ginmp3fod4PGOBcVPLyan',
-        'emergency_api_key': 'YCwURtFzlyuwRav2iE0ZaLsJC9wYHmD25pud4l92'
+        'api_key': 'hE19M0YbWOLxyWWhu46Ginmp3fod4PGOBcVPLyan'
     }
 
     response = await get_response(url, params=params)
@@ -67,8 +64,7 @@ async def mars_rover_photos():
     url = 'http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=2024-02-19'
 
     params = {
-        'api_key': 'hE19M0YbWOLxyWWhu46Ginmp3fod4PGOBcVPLyan',
-        'emergency_api_key': 'YCwURtFzlyuwRav2iE0ZaLsJC9wYHmD25pud4l92'
+        'api_key': 'hE19M0YbWOLxyWWhu46Ginmp3fod4PGOBcVPLyan'
     }
 
     response = await get_response(url, params=params)
