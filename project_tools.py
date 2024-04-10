@@ -1,5 +1,24 @@
 import json
+import aiohttp
 from translate import Translator
+
+
+# Импорт необходимых библиотек
+
+
+async def get_response(url, params):
+    '''
+    Функция нужна для произведения асинхронных запросов
+    чтобы избежать длительного ожиданя получения информаци
+     от бота в период большого наплыва пользователей
+    :param url:
+    :param params:
+    :return:
+    '''
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, params=params) as resp:
+            return await resp.json()
 
 
 def get_config(file):

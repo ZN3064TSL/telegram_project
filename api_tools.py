@@ -1,10 +1,13 @@
-from project_tools import translator_e_to_r
+import asyncio
 import requests
+from project_tools import translator_e_to_r, get_response
 
 
-def apod():
+# Импорт необходимых библиотек
+
+async def apod():
     '''
-    Функция выполняющая запрос ежедневной картинки
+    Функция выполняющая асинхронный запрос ежедневной картинки
     :return:
     '''
 
@@ -14,7 +17,7 @@ def apod():
         'api_key': 'hE19M0YbWOLxyWWhu46Ginmp3fod4PGOBcVPLyan'
     }
 
-    response = requests.get(url, params=params).json()
+    response = await get_response(url, params=params)
     if response:
         apod_info = {'apod_title': response['title'],
                      'apod_info': response['explanation'],
