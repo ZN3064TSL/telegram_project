@@ -16,11 +16,10 @@ async def apod():
     }
 
     response = await get_response(url, params=params)
-    print(response)
     if response:
         apod_info = {'apod_title': response['title'],
                      'apod_info': response['explanation'],
-                     'image_url': response['hdurl']}
+                     'image_url': response['url']}
         return apod_info
 
 
