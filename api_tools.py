@@ -47,7 +47,7 @@ async def epic():
             'day': response['date'].split()[0].split('-')[2]
         }
         url = (f'https://api.nasa.gov/EPIC/archive/natural/'
-               f'{date['year']}/{date['mouth']}/{date['day']}/png/{response['image']}.png?api_key={params['api_key']}')
+               f"{date['year']}/{date['mouth']}/{date['day']}/png/{response['image']}.png?api_key={params['api_key']}")
 
         epic_info = []
         epic_info.append(date)

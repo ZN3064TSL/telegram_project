@@ -19,7 +19,7 @@ class TelegramBot():
 
         user_name = update.effective_user.first_name
         chat_id = update.message.chat_id
-        joined(chat_id)
+        joined('joined.sqlite', chat_id, user_name)
         await update.message.reply_text(f'Приветствую тебя, {user_name}',
                                         reply_markup=markup)
 
@@ -71,10 +71,10 @@ class TelegramBot():
         if apod_info['apod_media_type'] == 'image':
             await context.bot.send_photo(chat_id=update.message.chat_id,
                                          photo=apod_content_url,
-                                         caption=f'{apod_info['apod_title']}\n\n\n{apod_info['apod_info']}')
+                                         caption=f"{apod_info['apod_title']}\n\n\n{apod_info['apod_info']}")
         elif apod_info['apod_media_type'] == 'video':
-            await update.message.reply_text(f'{apod_info['apod_title']}\n\n\n{apod_info['apod_info']}\n\n'
-                                            f'https://www.youtube.com/embed/w5uUcq__vMo?rel=0')
+            await update.message.reply_text(f"{apod_info['apod_title']}\n\n\n{apod_info['apod_info']}\n\n"
+                                            f"https://www.youtube.com/embed/w5uUcq__vMo?rel=0")
 
     async def send_epic(self, update, context):
         '''
@@ -91,7 +91,7 @@ class TelegramBot():
         await context.bot.send_photo(chat_id=update.message.chat_id,
                                      photo=epic_image_url,
                                      caption=f'The newest image of the Earth.\n\n'
-                                             f'Photo date: {'-'.join([i for i in epic_info[0].values()])}')
+                                             f"Photo date: {'-'.join([i for i in epic_info[0].values()])}")
 
     async def send_mars_rover_photos(self, update, context):
         '''

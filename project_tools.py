@@ -33,22 +33,23 @@ def get_config(file):
         return config
 
 
-def joined(db, chat_id, user_name):
+def joined(db, chat_id, user_name_input):
     '''
-    Функция добавления id чата с пользователем в файл
+    Функция добавления id чата с пользователем в базу данных
     :param chat_id:
     :return:
     '''
 
-    con = sqlite3.connect(db)
+    if chat_id not in [i[0] for i in get_joined_users_id(db)]:
+        con = sqlite3.connect(db)
 
-    cur = con.cursor()
+        cur = con.cursor()
 
-    result = cur.execute("""INSERT INTO joined_users VALUES (chat_id, user_name)""")
+        result = cur.execute(f"""INSERT INTO joined_users (id, user_name) 
+        VALUES ({chat_id}, '{user_name_input}')""")
 
-    con.commit()
-    con.close()
-
+        con.commit()
+        con.close()
 
 
 def get_joined_users_id(db):
@@ -64,8 +65,6 @@ def get_joined_users_id(db):
 
     result = cur.execute("""SELECT * FROM joined_users""").fetchall()
 
-    print(result)
+    con.close()
 
     return result
-
-    con.close()
