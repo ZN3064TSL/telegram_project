@@ -2,7 +2,7 @@ import logging
 import random
 from telegram.ext import Application, MessageHandler, CommandHandler, filters
 from project_tools import get_config, joined
-from api_tools import apod, epic, mars_rover_photos
+from api_tools import apod, epic, mars_rover_photo
 from keyboard import markup
 from bot import TelegramBot
 

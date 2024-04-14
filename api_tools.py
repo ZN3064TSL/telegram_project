@@ -5,7 +5,7 @@ from project_tools import get_response
 
 async def apod():
     '''
-    Функция выполняющая асинхронный запрос ежедневной картинки
+    Функция выполняющая асинхронный запрос ежедневной картинки или видео
     :return:
     '''
 
@@ -16,10 +16,12 @@ async def apod():
     }
 
     response = await get_response(url, params=params)
+    print(response)
     if response:
         apod_info = {'apod_title': response['title'],
+                     'apod_media_type': response['media_type'],
                      'apod_info': response['explanation'],
-                     'image_url': response['url']}
+                     'content_url': response['url']}
         return apod_info
 
 
@@ -53,10 +55,10 @@ async def epic():
         return epic_info
 
 
-async def mars_rover_photos():
+async def mars_rover_photo():
     '''
     Функция выполняющая асинхронный запрос даты и
-    последнего изображения Земли сделанного телескопом Кассегрена
+    последних изображений Марса сделанного марсаходами
     :return:
     '''
 
@@ -72,6 +74,6 @@ async def mars_rover_photos():
         url = f'http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date={date}'
         response = await get_response(url, params=params)
         if response:
-            mars_rover_photos_info = {'photos': [i['img_src'] for i in response['photos']],
+            mars_rover_photo_info = {'photos': [i['img_src'] for i in response['photos']],
                                       'date': date}
-            return mars_rover_photos_info
+            return mars_rover_photo_info

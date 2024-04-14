@@ -1,6 +1,6 @@
 import json
 import aiohttp
-from translate import Translator
+import sqlite3
 
 
 # Импорт необходимых библиотек
@@ -33,38 +33,39 @@ def get_config(file):
         return config
 
 
-def translator_e_to_r(text):
-    '''
-    Переводчик текста с английского на русский (будет работать позже)
-    :param text:
-    :return:
-    '''
-
-    translator = Translator(from_lang='English', to_lang='Russian')
-    translated_text = translator.translate(text)
-    return translated_text
-
-
-def joined(chat_id):
+def joined(db, chat_id, user_name):
     '''
     Функция добавления id чата с пользователем в файл
     :param chat_id:
     :return:
     '''
 
-    with open('joined.txt', 'a') as file:
-        file.write(str(chat_id) + '\n')
+    con = sqlite3.connect(db)
+
+    cur = con.cursor()
+
+    result = cur.execute("""INSERT INTO joined_users VALUES (chat_id, user_name)""")
+
+    con.commit()
+    con.close()
+
 
 
 def get_joined_users_id(db):
     '''
-    Функция получения id всех пользвателей из файла
+    Функция получения id всех пользвателей из базы данных
     :param db:
     :return:
     '''
 
-    with open(db, 'r') as file:
-        chats = file.read().split()
-        if chats:
-            return chats
-        return None
+    con = sqlite3.connect(db)
+
+    cur = con.cursor()
+
+    result = cur.execute("""SELECT * FROM joined_users""").fetchall()
+
+    print(result)
+
+    return result
+
+    con.close()
